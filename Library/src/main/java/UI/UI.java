@@ -6,6 +6,7 @@ package UI;
 
 import book.book;
 import book.bookController;
+import java.awt.Image;
 import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -30,36 +31,40 @@ public class UI extends javax.swing.JFrame {
         loadTableData();
         setupTableListener();
         
+        ImageIcon icon = new ImageIcon(getClass().getClassLoader().getResource("bookicon.png"));
+        this.setIconImage(icon.getImage());
         
     
     }
+   
     
-    private void loadTableData() {
-   bookController bookControler = new bookController();
-    List<book> books = bookControler.getAllBooks();
+   private void loadTableData() {
+        bookController bookControler = new bookController();
+        List<book> books = bookControler.getAllBooks();
 
-    DefaultTableModel model = (DefaultTableModel) tableData.getModel();
-    model.setRowCount(0); 
+        DefaultTableModel model = (DefaultTableModel) tableData.getModel();
+        model.setRowCount(0);
 
-    for (book b : books) {
-        model.addRow(new Object[]{b.getId(), b.getName(), b.getAuthor(), b.getPrice()});
+        for (book b : books) {
+            model.addRow(new Object[]{b.getId(), b.getName(), b.getAuthor(), b.getGenre(), b.getPrice()});
+        }
     }
-}
     
     private void setupTableListener() {
-    tableData.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-        @Override
-        public void valueChanged(ListSelectionEvent event) {
-            if (!event.getValueIsAdjusting() && tableData.getSelectedRow() != -1) {
-                int selectedRow = tableData.getSelectedRow();
-                textFieldId.setText(tableData.getValueAt(selectedRow, 0).toString());
-                fieldName.setText(tableData.getValueAt(selectedRow, 1).toString());
-                fieldAuthor.setText(tableData.getValueAt(selectedRow, 2).toString());
-                fieldPrice.setText(tableData.getValueAt(selectedRow, 3).toString());
+        tableData.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent event) {
+                if (!event.getValueIsAdjusting() && tableData.getSelectedRow() != -1) {
+                    int selectedRow = tableData.getSelectedRow();
+                    textFieldId.setText(tableData.getValueAt(selectedRow, 0).toString());
+                    fieldName.setText(tableData.getValueAt(selectedRow, 1).toString());
+                    fieldAuthor.setText(tableData.getValueAt(selectedRow, 2).toString());
+                    fieldGenre.setText(tableData.getValueAt(selectedRow, 3).toString());
+                    fieldPrice.setText(tableData.getValueAt(selectedRow, 4).toString());
+                }
             }
-        }
-    });
-}
+        });
+    }
     
     
 
@@ -77,9 +82,11 @@ public class UI extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         labelPrice = new javax.swing.JLabel();
         labelName = new javax.swing.JLabel();
-        labelAuthor = new javax.swing.JLabel();
+        labelGenre = new javax.swing.JLabel();
         fieldPrice = new javax.swing.JTextField();
         fieldName = new javax.swing.JTextField();
+        fieldGenre = new javax.swing.JTextField();
+        labelAuthor = new javax.swing.JLabel();
         fieldAuthor = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableData = new javax.swing.JTable();
@@ -98,7 +105,7 @@ public class UI extends javax.swing.JFrame {
 
         titleProgram.setFont(new java.awt.Font("Tw Cen MT Condensed", 1, 48)); // NOI18N
         titleProgram.setText("LIBRARY");
-        getContentPane().add(titleProgram, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 10, -1, -1));
+        getContentPane().add(titleProgram, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 10, -1, -1));
         getContentPane().add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 620, 20));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Register"));
@@ -112,9 +119,9 @@ public class UI extends javax.swing.JFrame {
         labelName.setText("Name");
         jPanel1.add(labelName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
-        labelAuthor.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
-        labelAuthor.setText("Author");
-        jPanel1.add(labelAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
+        labelGenre.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
+        labelGenre.setText("Genre");
+        jPanel1.add(labelGenre, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, -1, -1));
         jPanel1.add(fieldPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, 220, -1));
 
         fieldName.addActionListener(new java.awt.event.ActionListener() {
@@ -123,20 +130,31 @@ public class UI extends javax.swing.JFrame {
             }
         });
         jPanel1.add(fieldName, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 220, -1));
-        jPanel1.add(fieldAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 220, -1));
+        jPanel1.add(fieldGenre, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 220, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 100, 320, 250));
+        labelAuthor.setFont(new java.awt.Font("Tw Cen MT Condensed Extra Bold", 0, 18)); // NOI18N
+        labelAuthor.setText("Author");
+        jPanel1.add(labelAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        fieldAuthor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fieldAuthorActionPerformed(evt);
+            }
+        });
+        jPanel1.add(fieldAuthor, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 220, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 310, 250));
 
         tableData.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "id", "name", "author", "price"
+                "id", "name", "author", "genre", "price"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -231,21 +249,22 @@ public class UI extends javax.swing.JFrame {
         int id = Integer.parseInt(textFieldId.getText());
         String name = fieldName.getText();
         String author = fieldAuthor.getText();
+        String genre = fieldGenre.getText();
         double price = Double.parseDouble(fieldPrice.getText());
 
-        book book = new book(id, name, author, price);
+        book book = new book(id, name, author,genre, price);
 
         bookController bookControler = new bookController();
         boolean updated = bookControler.updateBook(book);
 
         if (updated) {
-            JOptionPane.showMessageDialog(this, "Libro actualizado.");
+            JOptionPane.showMessageDialog(this, "Libro actualizado correctamente");
             loadTableData();
         } else {
-            JOptionPane.showMessageDialog(this, "Ha ocurrido un error.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "ha ocurrdo un error", "Error", JOptionPane.ERROR_MESSAGE);
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, introduzca un ID válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "introduzca un id valido.", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_updateButtonActionPerformed
 
@@ -254,25 +273,31 @@ public class UI extends javax.swing.JFrame {
     }//GEN-LAST:event_fieldNameActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    String name = fieldName.getText();
-    String author = fieldAuthor.getText();
-    double price = Double.parseDouble(fieldPrice.getText());
-    
-    book book = new book(0, name, author, price); 
-    
-    bookController bookControler = new bookController();
-   
-    boolean saved = bookControler.saveBook(book);
-    
-    if (saved) {
-        JOptionPane.showMessageDialog(this, "se ha guardado el libro correctamente");
-        fieldName.setText("");
-        fieldAuthor.setText("");
-        fieldPrice.setText("");
-        loadTableData(); 
-    } else {
-        JOptionPane.showMessageDialog(this, "ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
-    }
+        String name = fieldName.getText();
+        String author = fieldAuthor.getText();
+        String genre = fieldGenre.getText();
+        double price = Double.parseDouble(fieldPrice.getText());
+
+        if(name.isEmpty() || author.isEmpty() || genre.isEmpty() || fieldPrice.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        book book = new book(0, name, author, genre, price); 
+
+        bookController bookControler = new bookController();
+        boolean saved = bookControler.saveBook(book);
+
+        if (saved) {
+            JOptionPane.showMessageDialog(this, "se ha guardado el libro correctamente");
+            fieldName.setText("");
+            fieldAuthor.setText("");
+            fieldGenre.setText("");
+            fieldPrice.setText("");
+            loadTableData();
+        } else {
+            JOptionPane.showMessageDialog(this, "ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
+        }
    
     }//GEN-LAST:event_jButton4ActionPerformed
 
@@ -284,17 +309,18 @@ try {
         boolean deleted = bookControler.deleteBook(id);
 
         if (deleted) {
-            JOptionPane.showMessageDialog(this, "Libro eliminado.");
+            JOptionPane.showMessageDialog(this, "se ha eliminado el libro correctamente");
             loadTableData();
             textFieldId.setText("");
             fieldName.setText("");
             fieldAuthor.setText("");
+            fieldGenre.setText("");
             fieldPrice.setText("");
         } else {
             JOptionPane.showMessageDialog(this, "Ha ocurrido un error.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, introduzca un ID válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "introduzca un ID válido.", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_deleteButtonActionPerformed
 
@@ -303,7 +329,7 @@ try {
     boolean cleared = bookControler.deleteAllBooks();
 
     if (cleared) {
-        JOptionPane.showMessageDialog(this, "Se han eliminado todos los libros");
+        JOptionPane.showMessageDialog(this, "se han eliminado todos los libros");
         loadTableData();
     } else {
         JOptionPane.showMessageDialog(this, "Ha ocurrido un error", "Error", JOptionPane.ERROR_MESSAGE);
@@ -322,23 +348,28 @@ try {
                 textFieldId.setText(model.getValueAt(i, 0).toString());
                 fieldName.setText(model.getValueAt(i, 1).toString());
                 fieldAuthor.setText(model.getValueAt(i, 2).toString());
-                fieldPrice.setText(model.getValueAt(i, 3).toString());
+                fieldGenre.setText(model.getValueAt(i, 3).toString());
+                fieldPrice.setText(model.getValueAt(i, 4).toString());
                 found = true;
                 break;
             }
         }
         
         if (!found) {
-            JOptionPane.showMessageDialog(this, "ID no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "ID no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
         }
     } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this, "Por favor, introduzca un ID válido.", "Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(this, "introduzca un ID válido", "Error", JOptionPane.ERROR_MESSAGE);
     }
     }//GEN-LAST:event_searchIDActionPerformed
 
     private void textFieldIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldIdActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textFieldIdActionPerformed
+
+    private void fieldAuthorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fieldAuthorActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fieldAuthorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -381,6 +412,7 @@ try {
     private javax.swing.JButton deleteButton;
     private javax.swing.JButton exitButton;
     private javax.swing.JTextField fieldAuthor;
+    private javax.swing.JTextField fieldGenre;
     private javax.swing.JTextField fieldName;
     private javax.swing.JTextField fieldPrice;
     private javax.swing.JButton jButton4;
@@ -389,6 +421,7 @@ try {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel labelAuthor;
+    private javax.swing.JLabel labelGenre;
     private javax.swing.JLabel labelName;
     private javax.swing.JLabel labelPrice;
     private javax.swing.JButton searchID;

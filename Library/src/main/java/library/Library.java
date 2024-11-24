@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.library;
+package library;
 
 import UI.UI;
+import UI.login;
 import book.bookController;
 import com.sun.tools.javac.Main;
 import java.net.URL;
@@ -19,12 +20,12 @@ import javax.swing.JFrame;
 public class Library{
     public static void main(String[] args) {
         
-        UI jframe = new UI();
-        
-        
-        jframe.setSize(700,500);
-        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        jframe.setVisible(true);
+         login loginUI = new login();
+         loginUI.setSize(400, 370); 
+         loginUI.setLocationRelativeTo(null); 
+         loginUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+         loginUI.setVisible(true);
+         
         
       
        

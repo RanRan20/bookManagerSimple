@@ -18,15 +18,15 @@ import java.util.List;
  * @author DELL
  */
 public class bookController {
-   
-    
-     public boolean saveBook(book book) {
+
+    public boolean saveBook(book book) {
         try (Connection connection = Conection.getConnection()) {
-            String sql = "INSERT INTO book (name, author, price) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO book (name, author, genre, price) VALUES (?, ?, ?, ?)";
             try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, book.getName());
                 statement.setString(2, book.getAuthor());
-                statement.setDouble(3, book.getPrice());
+                statement.setString(3, book.getGenre());
+                statement.setDouble(4, book.getPrice());
 
                 int rowsInserted = statement.executeUpdate();
 
@@ -35,7 +35,7 @@ public class bookController {
                         int id = generatedKeys.getInt(1);
                         book.setId(id);
                     } else {
-                        throw new SQLException("Fallo al obtener el ID autoincremental.");
+                        throw new SQLException("Fallo al obtener el ID.");
                     }
                 }
 
@@ -51,14 +51,15 @@ public class bookController {
     }
 
     public boolean updateBook(book book) {
-        String sql = "UPDATE book SET name = ?, author = ?, price = ? WHERE id = ?";
+        String sql = "UPDATE book SET name = ?, author = ?, genre = ?, price = ? WHERE id = ?";
         try (Connection connection = Conection.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, book.getName());
             statement.setString(2, book.getAuthor());
-            statement.setDouble(3, book.getPrice());
-            statement.setInt(4, book.getId());
+            statement.setString(3, book.getGenre());
+            statement.setDouble(4, book.getPrice());
+            statement.setInt(5, book.getId());
 
             int rowsUpdated = statement.executeUpdate();
             return rowsUpdated > 0;
@@ -95,9 +96,10 @@ public class bookController {
                 int id = resultSet.getInt("id");
                 String name = resultSet.getString("name");
                 String author = resultSet.getString("author");
+                String genre = resultSet.getString("genre");
                 double price = resultSet.getDouble("price");
 
-                book book = new book(id, name, author, price);
+                book book = new book(id, name, author, genre, price);
                 books.add(book);
             }
         } catch (SQLException e) {
@@ -118,7 +120,53 @@ public class bookController {
             return false;
         }
     }
+    
+    public List<book> searchBooks(String name, String author, String genre) {
+    List<book> books = new ArrayList<>();
+    StringBuilder sql = new StringBuilder("SELECT * FROM book WHERE 1=1");
 
+   
+    if (name != null && !name.isEmpty()) {
+        sql.append(" AND name LIKE ?");
+    }
+    if (author != null && !author.isEmpty()) {
+        sql.append(" AND author LIKE ?");
+    }
+    if (genre != null && !genre.isEmpty()) {
+        sql.append(" AND genre LIKE ?");
+    }
+
+    try (Connection connection = Conection.getConnection();
+         PreparedStatement statement = connection.prepareStatement(sql.toString())) {
+
+        int index = 1;
+        if (name != null && !name.isEmpty()) {
+            statement.setString(index++, "%" + name + "%");
+        }
+        if (author != null && !author.isEmpty()) {
+            statement.setString(index++, "%" + author + "%");
+        }
+        if (genre != null && !genre.isEmpty()) {
+            statement.setString(index++, "%" + genre + "%");
+        }
+
+        try (ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String bookName = resultSet.getString("name");
+                String bookAuthor = resultSet.getString("author");
+                String bookGenre = resultSet.getString("genre");
+                double price = resultSet.getDouble("price");
+
+                book b = new book(id, bookName, bookAuthor, bookGenre, price);
+                books.add(b);
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return books;
+}
 }
 
 

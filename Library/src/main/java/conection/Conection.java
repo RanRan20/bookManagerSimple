@@ -14,24 +14,24 @@ import java.sql.SQLException;
  */
 public class Conection {
     
-    private static final String URL = "jdbc:mysql://localhost:3306/library"; 
-    private static final String USER = "root";
-    private static final String PASSWORD = "1234";
+    private static final String URL = "jdbc:sqlserver://testlibrary.database.windows.net:1433;database=library;user=user1234@testlibrary;password=Contraseña1;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;";
+    private static final String USER = "user1234@testlibrary";
+    private static final String PASSWORD = "Contraseña1";
 
     public static Connection getConnection() {
         Connection connection = null;
         try {
            
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             
-            // Obtener la conexión
+            
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
-            System.out.println("Conexión exitosa a la base de datos.");
+            System.out.println("Conexion realizada con exito");
         } catch (ClassNotFoundException e) {
-            System.out.println("Error: Driver JDBC no encontrado.");
+            System.out.println("no se ha encontrado el jdbc driver");
             e.printStackTrace();
         } catch (SQLException e) {
-            System.out.println("Error: No se pudo establecer la conexión a la base de datos.");
+            System.out.println("no se ha podido establecer una conexion con la base de datos");
             e.printStackTrace();
         }
         return connection;
