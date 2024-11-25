@@ -2,7 +2,6 @@ UI\login$3.class
 UI\UIuser.class
 library\Library.class
 UI\login.class
-testing\test.class
 UI\UI$5.class
 UI\UI$8.class
 login\user.class
@@ -17,7 +16,6 @@ UI\UIuser$1.class
 UI\UI$6.class
 UI\login$2.class
 UI\UI$9.class
-login\loginController.class
 UI\UI$10.class
 book\book.class
 UI\UI$2.class

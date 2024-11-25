@@ -25,10 +25,7 @@ public class Library{
          loginUI.setLocationRelativeTo(null); 
          loginUI.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
          loginUI.setVisible(true);
-         
         
-      
-       
     
     }
   

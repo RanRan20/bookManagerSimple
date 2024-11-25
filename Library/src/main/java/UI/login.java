@@ -180,13 +180,13 @@ public class login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPasswordField JpasswordField;
-    private javax.swing.JButton jButtonEnter;
+    public javax.swing.JPasswordField JpasswordField;
+    public javax.swing.JButton jButtonEnter;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jUserField;
+    public javax.swing.JTextField jUserField;
     // End of variables declaration//GEN-END:variables
 }
