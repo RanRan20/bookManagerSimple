@@ -2,6 +2,7 @@ UI\login$3.class
 UI\UIuser.class
 library\Library.class
 UI\login.class
+testing\test.class
 UI\UI$5.class
 UI\UI$8.class
 login\user.class
